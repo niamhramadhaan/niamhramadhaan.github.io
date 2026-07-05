@@ -461,22 +461,87 @@ a:hover {
 }
 
 /* ------------------------------------------------------------------
-   Skills — one curated dash-list, two columns. No meters, ever.
+   Skills — a lifecycle spectrum: discover → deliver. The rail and
+   nodes are earned (a real ordered sequence). No meters, ever.
    ------------------------------------------------------------------ */
 
-.skills .dash-list {
-  columns: 2;
-  column-gap: var(--space-64);
-  max-width: 44rem;
+.range {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-24);
+  list-style: none;
+  margin: 0;
+  padding: var(--space-8) 0 0;
+}
+
+/* The rail */
+.range::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 0;
+  right: 12px;
+  height: 1px;
+  background: var(--color-border-strong);
+}
+
+/* Arrowhead — the range keeps going */
+.range::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 0;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--color-ink-faint);
+  border-right: 1px solid var(--color-ink-faint);
+  transform: rotate(45deg);
+}
+
+.range-phase {
+  position: relative;
+  padding-top: var(--space-32);
+}
+
+/* Node on the rail */
+.range-phase::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-ink-soft);
+  background: var(--color-canvas);
+}
+
+/* Where the work starts — the section's single accent use */
+.range-phase:first-child::before {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.range-phase h3 {
+  font-size: var(--text-body);
+  margin-bottom: var(--space-12);
+}
+
+.range .dash-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
   font-family: var(--font-mono);
   font-size: var(--text-label);
   line-height: var(--leading-label);
   color: var(--color-ink-soft);
 }
 
-.skills .dash-list li {
-  break-inside: avoid;
-  padding-block: var(--space-8);
+.range-domains {
+  margin-top: var(--space-40);
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--color-border);
 }
 
 /* ------------------------------------------------------------------
@@ -574,6 +639,31 @@ a:hover {
     background-size: 100% 1px;
   }
 
+  /* The lifecycle rail draws itself left to right, phases follow */
+  html.js .range::before {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 900ms var(--ease-editorial) 200ms;
+  }
+
+  html.js .range.is-visible::before {
+    transform: scaleX(1);
+  }
+
+  html.js .range .range-phase {
+    opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-editorial);
+  }
+
+  html.js .range.is-visible .range-phase {
+    opacity: 1;
+  }
+
+  html.js .range .range-phase:nth-child(1) { transition-delay: 250ms; }
+  html.js .range .range-phase:nth-child(2) { transition-delay: 400ms; }
+  html.js .range .range-phase:nth-child(3) { transition-delay: 550ms; }
+  html.js .range .range-phase:nth-child(4) { transition-delay: 700ms; }
+
   /* Hero signature draws once on load */
   .signature path {
     stroke-dasharray: 1;
@@ -614,8 +704,26 @@ a:hover {
     gap: var(--space-4);
   }
 
-  .skills .dash-list {
-    columns: 1;
+  /* The rail turns vertical: a quiet timeline down the left edge */
+  .range {
+    grid-template-columns: 1fr;
+    gap: var(--space-32);
+    border-left: 1px solid var(--color-border);
+    padding: 0 0 0 var(--space-24);
+  }
+
+  .range::before,
+  .range::after {
+    display: none;
+  }
+
+  .range-phase {
+    padding-top: 0;
+  }
+
+  .range-phase::before {
+    top: 4px;
+    left: calc(-1 * var(--space-24) - 6px);
   }
 
   .section {

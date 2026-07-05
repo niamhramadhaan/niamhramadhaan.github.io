@@ -27,7 +27,7 @@ Warm restraint · composed · quietly confident. Print-like, scholarly, editoria
 ## Design Principles
 
 1. **Every link goes somewhere real.** All content is sourced from the actual resume and live GitHub data; nothing invented, nothing padded. Thin projects are allowed to look thinner.
-2. **Accent is earned, not sprayed.** Ink blue appears only in: nav active state, link hover, focus rings, cursor spotlight, and SVG strokes. Audit every viewport for ≤5% blue.
+2. **Accent is earned, not sprayed.** Ink blue appears only in: nav active state, link hover, focus rings, and SVG strokes. Audit every viewport for ≤5% blue. Exception: each product card carries its own product's brand color (duck-orange, teal, crimson, gold — sourced from the products' real assets) on decorative surfaces only (plate tint, spotlight, dash markers, hover underline); text always stays ink.
 3. **Serif reads, mono annotates.** Serif carries names, headings, and prose; mono carries dates, chips, labels, and navigation. Never mixed roles.
 4. **Motion like ink settling.** 8px reveals, hairline draw-ins, one hero stroke animation — nothing bounces, nothing slides across the screen. Content is visible by default; motion enhances, never gates.
 5. **Show the products as ideas.** Each product gets a bespoke line-art SVG vignette expressing its concept (mindmap, workspace, multi-screen, tool taxonomy) — imagery through drawing, not stock or fake screenshots.

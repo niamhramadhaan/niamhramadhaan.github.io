@@ -324,7 +324,7 @@ a:hover {
     border-radius: inherit;
     background: radial-gradient(
       22rem circle at var(--mx, 50%) var(--my, 50%),
-      var(--color-accent-soft),
+      color-mix(in srgb, var(--brand, var(--color-accent)) 10%, transparent),
       transparent 65%
     );
     opacity: 0;
@@ -337,15 +337,37 @@ a:hover {
   }
 }
 
-.vignette {
+/* Each product carries its own brand color on decorative surfaces only;
+   text stays ink. Palettes sourced from each product's real assets. */
+.product[data-brand="testlah"] { --brand: #e8912d; }
+.product[data-brand="chpio"]   { --brand: #2dd4bf; }
+.product[data-brand="jemima"]  { --brand: #c2333f; }
+.product[data-brand="inztun"]  { --brand: #c9a96e; }
+
+.brand-plate {
   align-self: start;
-  width: 100%;
-  height: auto;
-  color: var(--color-ink-soft);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: var(--space-16);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--brand) 9%, var(--color-canvas-raised));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--brand) 25%, var(--color-border));
 }
 
-.vignette .v-accent {
-  color: var(--color-accent);
+.brand-plate img,
+.brand-plate .brand-mark,
+.brand-plate .lottie {
+  width: 82%;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+/* Keep the inztun mark's line weight in the site's hairline language */
+.brand-mark circle,
+.brand-mark line {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 2.25;
 }
 
 .product-body {
@@ -370,7 +392,7 @@ a:hover {
 
 .product h3 a:hover {
   text-decoration-line: underline;
-  text-decoration-color: var(--color-accent);
+  text-decoration-color: var(--brand, var(--color-accent));
 }
 
 .product-desc {
@@ -386,6 +408,10 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
+}
+
+.product .dash-list li::before {
+  color: color-mix(in srgb, var(--brand, var(--color-ink-faint)) 60%, var(--color-ink-faint));
 }
 
 .product-links {
@@ -548,6 +574,34 @@ a:hover {
    Contact
    ------------------------------------------------------------------ */
 
+.contact {
+  position: relative;
+}
+
+/* The pendant lamp — its glow says the lights are on */
+.lamp {
+  position: absolute;
+  top: 3.4rem; /* cord starts at the section-head rule, as if hung from it */
+  right: clamp(2.5rem, 10vw, 8rem);
+  width: clamp(5.5rem, 10vw, 7.5rem);
+  height: auto;
+  color: var(--color-accent);
+  pointer-events: none;
+}
+
+.lamp g[stroke] {
+  color: var(--color-ink-soft);
+}
+
+.lamp .lamp-bulb {
+  fill: color-mix(in srgb, var(--color-accent) 35%, var(--color-canvas));
+}
+
+.contact-invite,
+.contact-list {
+  position: relative;
+}
+
 .contact-invite {
   max-width: var(--measure);
   font-size: var(--text-h3);
@@ -567,8 +621,26 @@ a:hover {
 
 .contact-list li {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: var(--space-16);
+}
+
+.contact-icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--color-ink-faint);
+  transition: color var(--duration-fast) ease-out,
+    transform var(--duration-base) var(--ease-editorial);
+}
+
+.contact-list li:hover .contact-icon {
+  color: var(--color-accent);
+  transform: translateY(-2px) rotate(-4deg);
+}
+
+.contact-list li:hover .channel {
+  color: var(--color-accent);
 }
 
 .contact-list .channel {
@@ -576,6 +648,7 @@ a:hover {
   font-size: var(--text-label);
   color: var(--color-ink-faint);
   min-width: 5.5rem;
+  transition: color var(--duration-fast) ease-out;
 }
 
 .contact-list a {
@@ -664,6 +737,38 @@ a:hover {
   html.js .range .range-phase:nth-child(3) { transition-delay: 550ms; }
   html.js .range .range-phase:nth-child(4) { transition-delay: 700ms; }
 
+  /* Lamp glow breathes slowly; bulb warms up */
+  .lamp .lamp-light {
+    animation: lamp-breathe 4.5s var(--ease-editorial) infinite alternate;
+    transform-origin: 50% 32%;
+  }
+
+  @keyframes lamp-breathe {
+    from {
+      opacity: 0.7;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1.04);
+    }
+  }
+
+  /* Contact icons draw themselves in, one row after another */
+  html.js .contact-list .contact-icon [pathLength] {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 900ms var(--ease-editorial);
+  }
+
+  html.js .contact-list.is-visible .contact-icon [pathLength] {
+    stroke-dashoffset: 0;
+  }
+
+  html.js .contact-list li:nth-child(1) .contact-icon [pathLength] { transition-delay: 150ms; }
+  html.js .contact-list li:nth-child(2) .contact-icon [pathLength] { transition-delay: 350ms; }
+  html.js .contact-list li:nth-child(3) .contact-icon [pathLength] { transition-delay: 550ms; }
+
   /* Hero signature draws once on load */
   .signature path {
     stroke-dasharray: 1;
@@ -695,8 +800,14 @@ a:hover {
     padding: var(--space-24);
   }
 
-  .vignette {
+  .brand-plate {
     max-width: 10rem;
+  }
+
+  .lamp {
+    width: 4.5rem;
+    top: var(--space-64);
+    right: var(--space-24);
   }
 
   .xp-list li {

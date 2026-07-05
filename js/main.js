@@ -78,6 +78,42 @@
     });
   }
 
+  /* ---- ChPio Lottie: load the player only when the card approaches ---- */
+  var lottieHost = document.querySelector("[data-lottie]");
+  if (lottieHost && "IntersectionObserver" in window) {
+    var lottieStarted = false;
+    var startLottie = function () {
+      if (lottieStarted) return;
+      lottieStarted = true;
+      var script = document.createElement("script");
+      script.src = "assets/js/lottie_light.min.js";
+      script.onload = function () {
+        var anim = window.lottie.loadAnimation({
+          container: lottieHost,
+          renderer: "svg",
+          loop: true,
+          autoplay: motionOK,
+          path: lottieHost.getAttribute("data-lottie"),
+        });
+        if (!motionOK) {
+          anim.addEventListener("DOMLoaded", function () {
+            anim.goToAndStop(Math.floor(anim.totalFrames / 2), true);
+          });
+        }
+      };
+      document.head.appendChild(script);
+    };
+    new IntersectionObserver(
+      function (entries, obs) {
+        if (entries[0].isIntersecting) {
+          obs.disconnect();
+          startLottie();
+        }
+      },
+      { rootMargin: "300px 0px" }
+    ).observe(lottieHost);
+  }
+
   /* ---- Cursor spotlight on product cards (pointer: fine only) ---- */
   if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
     document.querySelectorAll(".product").forEach(function (card) {

@@ -1,0 +1,633 @@
+@import url("tokens.css");
+
+/* ------------------------------------------------------------------
+   Base
+   ------------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + 1rem);
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: var(--text-body);
+  font-weight: var(--weight-body);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-canvas);
+}
+
+h1,
+h2,
+h3 {
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-heading);
+  margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--color-border-strong);
+  transition: text-decoration-color var(--duration-fast) ease-out,
+    color var(--duration-fast) ease-out;
+}
+
+a:hover {
+  color: var(--color-accent);
+  text-decoration-color: var(--color-accent);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-canvas), 0 0 0 4px var(--color-accent-ring);
+  border-radius: var(--radius-tight);
+}
+
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  color: var(--color-ink-faint);
+  letter-spacing: 0.01em;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------
+   Dash lists — the house list style. No bullets anywhere.
+   ------------------------------------------------------------------ */
+
+.dash-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-list li {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.dash-list li::before {
+  content: "—";
+  position: absolute;
+  left: 0;
+  color: var(--color-ink-faint);
+}
+
+/* ------------------------------------------------------------------
+   Nav
+   ------------------------------------------------------------------ */
+
+.site-nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-nav);
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  background: transparent;
+  transition: background-color var(--duration-base) ease-out,
+    box-shadow var(--duration-base) ease-out;
+}
+
+.site-nav.is-scrolled {
+  background: color-mix(in srgb, var(--color-canvas) 92%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.site-nav .container {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-16);
+}
+
+.wordmark {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--color-ink);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.wordmark:hover {
+  color: var(--color-accent);
+}
+
+.site-nav ul {
+  list-style: none;
+  display: flex;
+  gap: clamp(1rem, 3vw, 2rem);
+  margin: 0;
+  padding: 0;
+}
+
+.site-nav ul a {
+  position: relative;
+  display: inline-block;
+  padding: var(--space-12) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--color-ink-soft);
+  text-decoration: none;
+}
+
+.site-nav ul a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.5rem;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--duration-base) var(--ease-editorial);
+}
+
+.site-nav ul a:hover {
+  color: var(--color-accent);
+}
+
+.site-nav ul a.is-active {
+  color: var(--color-ink);
+}
+
+.site-nav ul a.is-active::after {
+  transform: scaleX(1);
+}
+
+/* ------------------------------------------------------------------
+   Hero
+   ------------------------------------------------------------------ */
+
+.hero {
+  padding-top: calc(var(--nav-height) + clamp(3.5rem, 10vh, 6.5rem));
+  padding-bottom: var(--space-96);
+}
+
+.hero h1 {
+  font-size: var(--text-display);
+  line-height: var(--leading-tight);
+  letter-spacing: -0.015em;
+}
+
+.signature {
+  display: block;
+  width: clamp(9rem, 22vw, 13rem);
+  height: auto;
+  margin-top: var(--space-8);
+  color: var(--color-accent);
+  opacity: 0.75;
+}
+
+.hero-role {
+  margin-top: var(--space-24);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  color: var(--color-ink-faint);
+}
+
+.hero-role b {
+  font-weight: var(--weight-heading);
+  color: var(--color-ink-soft);
+}
+
+.hero-bio {
+  max-width: var(--measure);
+  margin-top: var(--space-24);
+  color: var(--color-ink-soft);
+}
+
+.hero-links {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-16);
+  margin-top: var(--space-40);
+}
+
+.hero-links .sep {
+  color: var(--color-border-strong);
+}
+
+/* ------------------------------------------------------------------
+   Sections
+   ------------------------------------------------------------------ */
+
+.section {
+  padding-block: var(--space-96);
+}
+
+.section + .section {
+  padding-top: 0;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-16);
+  padding-bottom: var(--space-16);
+  margin-bottom: var(--space-40);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.section-head h2 {
+  font-size: var(--text-h2);
+}
+
+.section-head .mono {
+  white-space: nowrap;
+}
+
+.section-intro {
+  max-width: var(--measure);
+  color: var(--color-ink-soft);
+  margin-bottom: var(--space-40);
+  margin-top: calc(-1 * var(--space-16));
+}
+
+/* ------------------------------------------------------------------
+   Products
+   ------------------------------------------------------------------ */
+
+.product-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-24);
+}
+
+.product {
+  position: relative;
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: var(--space-32);
+  padding: var(--space-32);
+  background: var(--color-canvas-raised);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-ring), var(--shadow-whisper);
+  transition: box-shadow var(--duration-base) var(--ease-editorial);
+}
+
+.product:hover {
+  box-shadow: var(--shadow-ring-strong), var(--shadow-whisper-deep);
+}
+
+/* Cursor spotlight — soft accent light on paper, pointer devices only */
+@media (hover: hover) and (pointer: fine) {
+  .product::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+      22rem circle at var(--mx, 50%) var(--my, 50%),
+      var(--color-accent-soft),
+      transparent 65%
+    );
+    opacity: 0;
+    transition: opacity var(--duration-fast) ease-out;
+    pointer-events: none;
+  }
+
+  .product:hover::after {
+    opacity: 1;
+  }
+}
+
+.vignette {
+  align-self: start;
+  width: 100%;
+  height: auto;
+  color: var(--color-ink-soft);
+}
+
+.vignette .v-accent {
+  color: var(--color-accent);
+}
+
+.product-body {
+  min-width: 0;
+}
+
+.product-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-16);
+}
+
+.product h3 {
+  font-size: var(--text-h3);
+}
+
+.product h3 a {
+  text-decoration: none;
+}
+
+.product h3 a:hover {
+  text-decoration-line: underline;
+  text-decoration-color: var(--color-accent);
+}
+
+.product-desc {
+  margin-top: var(--space-12);
+  max-width: var(--measure);
+  color: var(--color-ink-soft);
+}
+
+.product .dash-list {
+  margin-top: var(--space-16);
+  font-size: var(--text-small);
+  color: var(--color-ink-soft);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.product-links {
+  display: flex;
+  gap: var(--space-24);
+  margin-top: var(--space-24);
+}
+
+.product-links a {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--color-ink-soft);
+  text-decoration: none;
+}
+
+.product-links a:hover {
+  color: var(--color-accent);
+}
+
+.product-links a::after {
+  content: " ↗";
+  color: var(--color-ink-faint);
+}
+
+.product-links a:hover::after {
+  color: var(--color-accent);
+}
+
+/* ------------------------------------------------------------------
+   Experience — a changelog, read bottom of page to top of career
+   ------------------------------------------------------------------ */
+
+.xp-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.xp-list li {
+  display: grid;
+  grid-template-columns: 9.5rem 1fr;
+  gap: var(--space-24);
+  padding-block: var(--space-24);
+}
+
+.xp-list li + li {
+  border-top: 1px solid var(--color-border);
+}
+
+.xp-when {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  color: var(--color-ink-faint);
+  padding-top: 0.3em;
+}
+
+.xp-role {
+  font-size: var(--text-body);
+  font-weight: var(--weight-heading);
+}
+
+.xp-role .at {
+  font-weight: var(--weight-body);
+  color: var(--color-ink-soft);
+}
+
+.xp-note {
+  margin-top: var(--space-4);
+  max-width: var(--measure);
+  font-size: var(--text-small);
+  color: var(--color-ink-soft);
+}
+
+/* ------------------------------------------------------------------
+   Skills — one curated dash-list, two columns. No meters, ever.
+   ------------------------------------------------------------------ */
+
+.skills .dash-list {
+  columns: 2;
+  column-gap: var(--space-64);
+  max-width: 44rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+  color: var(--color-ink-soft);
+}
+
+.skills .dash-list li {
+  break-inside: avoid;
+  padding-block: var(--space-8);
+}
+
+/* ------------------------------------------------------------------
+   Contact
+   ------------------------------------------------------------------ */
+
+.contact-invite {
+  max-width: var(--measure);
+  font-size: var(--text-h3);
+  line-height: var(--leading-heading);
+  color: var(--color-ink);
+  margin-bottom: var(--space-40);
+}
+
+.contact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.contact-list li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-16);
+}
+
+.contact-list .channel {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  color: var(--color-ink-faint);
+  min-width: 5.5rem;
+}
+
+.contact-list a {
+  padding-block: var(--space-8);
+}
+
+/* ------------------------------------------------------------------
+   Footer
+   ------------------------------------------------------------------ */
+
+.site-footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: var(--space-32);
+  margin-top: var(--space-64);
+}
+
+.site-footer .container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-8) var(--space-24);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-ink-faint);
+}
+
+.site-footer a {
+  color: inherit;
+}
+
+/* ------------------------------------------------------------------
+   Motion — ink settling. Everything here is enhancement: content is
+   fully visible without JS, and instant under reduced motion.
+   ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-reveal] {
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity var(--duration-slow) var(--ease-editorial),
+      transform var(--duration-slow) var(--ease-editorial);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+
+  html.js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Section rules draw themselves in like a line of ink */
+  html.js .section-head {
+    border-bottom-color: transparent;
+    background-image: linear-gradient(var(--color-border), var(--color-border));
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    background-size: 0% 1px;
+    transition: background-size 900ms var(--ease-editorial) 150ms;
+  }
+
+  html.js .section-head.is-visible {
+    background-size: 100% 1px;
+  }
+
+  /* Hero signature draws once on load */
+  .signature path {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: sig-draw 1200ms var(--ease-editorial) 350ms forwards;
+  }
+
+  @keyframes sig-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Responsive
+   ------------------------------------------------------------------ */
+
+@media (max-width: 40rem) {
+  .product {
+    grid-template-columns: 1fr;
+    gap: var(--space-24);
+    padding: var(--space-24);
+  }
+
+  .vignette {
+    max-width: 10rem;
+  }
+
+  .xp-list li {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .skills .dash-list {
+    columns: 1;
+  }
+
+  .section {
+    padding-block: var(--space-64);
+  }
+
+  .hero {
+    padding-bottom: var(--space-64);
+  }
+
+  .section-head {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+}

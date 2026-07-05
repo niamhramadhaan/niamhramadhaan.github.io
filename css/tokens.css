@@ -1,0 +1,111 @@
+/* ---------------------------------------------------------------
+   Design tokens — "warm restraint"
+   Canvas is parchment, never white. Ink is warm near-black.
+   Accent is ink blue, earned not sprayed: nav active state, link
+   hover, focus rings, cursor spotlight, SVG strokes. Nothing else.
+   Contrast verified (WCAG AA): ink 14.5:1 · soft 6.9:1 · faint 4.9:1
+   --------------------------------------------------------------- */
+
+:root {
+  color-scheme: light dark;
+
+  /* Canvas & ink */
+  --color-canvas: #f5f4ed;
+  --color-canvas-raised: #efeee4;
+  --color-ink: #23221c;
+  --color-ink-soft: #57544a;
+  --color-ink-faint: #6e6a58;
+  --color-border: #ddd9c9;
+  --color-border-strong: #c6c1ac;
+
+  /* Accent — ink blue, ≤5% of any viewport */
+  --color-accent: #1b365d;
+  --color-accent-soft: rgba(27, 54, 93, 0.07);
+  --color-accent-ring: rgba(27, 54, 93, 0.28);
+
+  /* Type families: serif reads, mono annotates */
+  --font-serif: "Charter", "Bitstream Charter", "Iowan Old Style",
+    "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo,
+    Consolas, "Liberation Mono", monospace;
+
+  /* Weight discipline: no synthetic bold */
+  --weight-body: 400;
+  --weight-heading: 500;
+
+  /* Scale */
+  --text-display: clamp(2.375rem, 1.7rem + 3vw, 3.375rem);
+  --text-h2: clamp(1.5rem, 1.3rem + 0.9vw, 1.875rem);
+  --text-h3: 1.3125rem;
+  --text-body: 1.0625rem;
+  --text-small: 0.9375rem;
+  --text-label: 0.8125rem;
+  --text-micro: 0.75rem;
+
+  --leading-tight: 1.1;
+  --leading-heading: 1.25;
+  --leading-body: 1.6;
+  --leading-label: 1.4;
+
+  /* Spacing — 4pt base */
+  --space-2: 0.125rem;
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-40: 2.5rem;
+  --space-64: 4rem;
+  --space-96: 6rem;
+  --space-128: 8rem;
+
+  /* Radius */
+  --radius-tight: 0.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 1rem;
+
+  /* Depth — whisper shadows & hairline rings only */
+  --shadow-whisper: 0 1px 2px rgba(35, 34, 28, 0.04),
+    0 8px 24px rgba(35, 34, 28, 0.05);
+  --shadow-whisper-deep: 0 2px 4px rgba(35, 34, 28, 0.05),
+    0 14px 36px rgba(35, 34, 28, 0.08);
+  --shadow-ring: 0 0 0 1px var(--color-border);
+  --shadow-ring-strong: 0 0 0 1px var(--color-border-strong);
+
+  /* Motion — ink settling, never bouncing */
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 160ms;
+  --duration-base: 320ms;
+  --duration-slow: 640ms;
+
+  /* Layout */
+  --measure: 44rem;
+  --container: 62rem;
+  --nav-height: 3.75rem;
+
+  /* Z scale */
+  --z-nav: 10;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Warm dark — charred paper, not cool slate */
+    --color-canvas: #1c1b16;
+    --color-canvas-raised: #24231b;
+    --color-ink: #eeece2;
+    --color-ink-soft: #b8b4a4;
+    --color-ink-faint: #93907e;
+    --color-border: #35332a;
+    --color-border-strong: #454234;
+
+    --color-accent: #6f9bd6;
+    --color-accent-soft: rgba(111, 155, 214, 0.09);
+    --color-accent-ring: rgba(111, 155, 214, 0.35);
+
+    --shadow-whisper: 0 1px 2px rgba(0, 0, 0, 0.2),
+      0 8px 24px rgba(0, 0, 0, 0.25);
+    --shadow-whisper-deep: 0 2px 4px rgba(0, 0, 0, 0.25),
+      0 14px 36px rgba(0, 0, 0, 0.35);
+  }
+}

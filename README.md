@@ -1,7 +1,5 @@
 # niamhramadhaan.github.io
 
-Personal portfolio of **Qois Ramadhani** — Product Analyst at SLTR Group.
-
 Live at **https://niamhramadhaan.github.io**
 
 Plain HTML, CSS, and JavaScript — no frameworks, no build step. Push to

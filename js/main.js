@@ -78,6 +78,45 @@
     });
   }
 
+  /* ---- Ink pad: the hero margin is drawable paper (pointer: fine) ---- */
+  var inkPad = document.querySelector(".ink-pad");
+  if (inkPad && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    var inkSvg = inkPad.querySelector(".ink-canvas");
+    var SVG_NS = "http://www.w3.org/2000/svg";
+    var lastPoint = null;
+
+    inkPad.addEventListener("pointerleave", function () {
+      lastPoint = null;
+    });
+
+    inkPad.addEventListener("pointermove", function (e) {
+      var rect = inkSvg.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      if (lastPoint) {
+        var dx = x - lastPoint.x;
+        var dy = y - lastPoint.y;
+        if (dx * dx + dy * dy < 16) return;
+        var seg = document.createElementNS(SVG_NS, "path");
+        seg.setAttribute(
+          "d",
+          "M" + lastPoint.x.toFixed(1) + " " + lastPoint.y.toFixed(1) +
+          " L" + x.toFixed(1) + " " + y.toFixed(1)
+        );
+        seg.setAttribute("class", "ink-stroke");
+        inkSvg.appendChild(seg);
+        inkPad.classList.add("has-ink");
+        window.setTimeout(function () {
+          seg.classList.add("ink-fade");
+        }, 1400);
+        window.setTimeout(function () {
+          seg.remove();
+        }, 3200);
+      }
+      lastPoint = { x: x, y: y };
+    });
+  }
+
   /* ---- ChPio Lottie: load the player only when the card approaches ---- */
   var lottieHost = document.querySelector("[data-lottie]");
   if (lottieHost && "IntersectionObserver" in window) {

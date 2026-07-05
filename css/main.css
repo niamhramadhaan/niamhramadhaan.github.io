@@ -253,6 +253,58 @@ a:hover {
 }
 
 /* ------------------------------------------------------------------
+   Ink pad — the hero's spare margin becomes drawable paper.
+   Pointer-fine devices only; touch users never see it.
+   ------------------------------------------------------------------ */
+
+.ink-pad {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ink-pad {
+    position: relative;
+    display: block;
+    height: 8.5rem;
+    margin-top: var(--space-24);
+    cursor: crosshair;
+  }
+
+  .ink-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .ink-stroke {
+    fill: none;
+    stroke: var(--color-ink-soft);
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    opacity: 0.55;
+  }
+
+  .ink-stroke.ink-fade {
+    opacity: 0;
+    transition: opacity 1.6s ease-out;
+  }
+
+  .ink-hint {
+    position: absolute;
+    bottom: var(--space-8);
+    left: 0;
+    font-size: var(--text-micro);
+    transition: opacity var(--duration-slow) ease-out;
+    pointer-events: none;
+  }
+
+  .ink-pad.has-ink .ink-hint {
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------------
    Sections
    ------------------------------------------------------------------ */
 
@@ -501,7 +553,11 @@ a:hover {
   padding: var(--space-8) 0 0;
 }
 
-/* The rail */
+/* The rail. Hovering a phase inks the rail up to its node. */
+.range {
+  --progress: 0%;
+}
+
 .range::before {
   content: "";
   position: absolute;
@@ -509,7 +565,21 @@ a:hover {
   left: 0;
   right: 12px;
   height: 1px;
-  background: var(--color-border-strong);
+  background-color: var(--color-border-strong);
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-size: var(--progress) 100%;
+  transition: background-size var(--duration-base) var(--ease-editorial);
+}
+
+.range:has(.range-phase:nth-child(1):hover) { --progress: 1%; }
+.range:has(.range-phase:nth-child(2):hover) { --progress: 26.5%; }
+.range:has(.range-phase:nth-child(3):hover) { --progress: 52%; }
+.range:has(.range-phase:nth-child(4):hover) { --progress: 78%; }
+
+/* The hovered phase leads; the others step back */
+.range:has(.range-phase:hover) .range-phase:not(:hover) {
+  opacity: 0.5;
 }
 
 /* Arrowhead — the range keeps going */
@@ -528,6 +598,7 @@ a:hover {
 .range-phase {
   position: relative;
   padding-top: var(--space-32);
+  transition: opacity var(--duration-base) var(--ease-editorial);
 }
 
 /* Node on the rail */
@@ -541,6 +612,15 @@ a:hover {
   border-radius: 50%;
   border: 1.5px solid var(--color-ink-soft);
   background: var(--color-canvas);
+  transition: border-color var(--duration-fast) ease-out,
+    background-color var(--duration-fast) ease-out,
+    transform var(--duration-base) var(--ease-editorial);
+}
+
+.range-phase:hover::before {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  transform: scale(1.2);
 }
 
 /* Where the work starts — the section's single accent use */
@@ -712,30 +792,17 @@ a:hover {
     background-size: 100% 1px;
   }
 
-  /* The lifecycle rail draws itself left to right, phases follow */
+  /* The lifecycle rail draws itself left to right */
   html.js .range::before {
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform 900ms var(--ease-editorial) 200ms;
+    transition: transform 900ms var(--ease-editorial) 200ms,
+      background-size var(--duration-base) var(--ease-editorial);
   }
 
   html.js .range.is-visible::before {
     transform: scaleX(1);
   }
-
-  html.js .range .range-phase {
-    opacity: 0;
-    transition: opacity var(--duration-slow) var(--ease-editorial);
-  }
-
-  html.js .range.is-visible .range-phase {
-    opacity: 1;
-  }
-
-  html.js .range .range-phase:nth-child(1) { transition-delay: 250ms; }
-  html.js .range .range-phase:nth-child(2) { transition-delay: 400ms; }
-  html.js .range .range-phase:nth-child(3) { transition-delay: 550ms; }
-  html.js .range .range-phase:nth-child(4) { transition-delay: 700ms; }
 
   /* Lamp glow breathes slowly; bulb warms up */
   .lamp .lamp-light {

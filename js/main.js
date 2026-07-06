@@ -153,6 +153,37 @@
     ).observe(lottieHost);
   }
 
+  /* ---- Journey ↔ phase-column hover sync ---- */
+  var journey = document.querySelector(".journey");
+  if (journey) {
+    var journeyStations = Array.prototype.slice.call(journey.querySelectorAll(".station"));
+    var journeyPhases = Array.prototype.slice.call(document.querySelectorAll(".range .range-phase"));
+    var rangeList = document.querySelector(".range");
+    var JOURNEY_STOPS = [0.13, 0.375, 0.625, 0.875];
+
+    var setLive = function (index, on) {
+      journey.classList.toggle("has-live", on);
+      if (rangeList) rangeList.classList.toggle("has-live", on);
+      journeyStations.forEach(function (s, i) {
+        s.classList.toggle("is-live", on && i === index);
+      });
+      journeyPhases.forEach(function (p, i) {
+        p.classList.toggle("is-live", on && i === index);
+      });
+      journey.style.setProperty("--journey-p", on ? JOURNEY_STOPS[index] : 0);
+    };
+
+    var bindLive = function (els) {
+      els.forEach(function (el, i) {
+        el.addEventListener("mouseenter", function () { setLive(i, true); });
+        el.addEventListener("mouseleave", function () { setLive(i, false); });
+      });
+    };
+
+    bindLive(journeyStations);
+    bindLive(journeyPhases);
+  }
+
   /* ---- Cursor spotlight on product cards (pointer: fine only) ---- */
   if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
     document.querySelectorAll(".product").forEach(function (card) {

@@ -235,6 +235,24 @@ a:hover {
   color: var(--color-ink-soft);
 }
 
+.edu {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-left: var(--space-8);
+}
+
+.edu-icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--color-ink-soft);
+}
+
+.edu-icon .tv-line {
+  opacity: 0.4;
+}
+
 .hero-bio {
   max-width: var(--measure);
   margin-top: var(--space-24);
@@ -361,6 +379,26 @@ a:hover {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-ring), var(--shadow-whisper);
   transition: box-shadow var(--duration-base) var(--ease-editorial);
+  overflow: hidden;
+}
+
+/* The original line-art vignette lives on as a corner watermark */
+.watermark {
+  position: absolute;
+  right: -1.5rem;
+  bottom: -1.75rem;
+  width: 15rem;
+  height: auto;
+  color: var(--brand, var(--color-ink-soft));
+  opacity: 0.07;
+  transform: rotate(-6deg);
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .watermark {
+    opacity: 0.1;
+  }
 }
 
 .product:hover {
@@ -393,7 +431,7 @@ a:hover {
    text stays ink. Palettes sourced from each product's real assets. */
 .product[data-brand="testlah"] { --brand: #e8912d; }
 .product[data-brand="chpio"]   { --brand: #2dd4bf; }
-.product[data-brand="jemima"]  { --brand: #c2333f; }
+.product[data-brand="jemima"]  { --brand: #0e7b35; }
 .product[data-brand="inztun"]  { --brand: #c9a96e; }
 
 .brand-plate {
@@ -623,6 +661,23 @@ a:hover {
   transform: scale(1.2);
 }
 
+/* Each phase's tool sketches itself in on hover */
+.phase-icon {
+  position: absolute;
+  top: -0.35rem;
+  left: 1.5rem;
+  width: 22px;
+  height: 22px;
+  color: var(--color-accent);
+  opacity: 0;
+  transition: opacity var(--duration-base) ease-out;
+  pointer-events: none;
+}
+
+.range-phase:hover .phase-icon {
+  opacity: 1;
+}
+
 /* Where the work starts — the section's single accent use */
 .range-phase:first-child::before {
   border-color: var(--color-accent);
@@ -804,6 +859,47 @@ a:hover {
     transform: scaleX(1);
   }
 
+  /* Phase icons draw stroke by stroke, then float while hovered */
+  .phase-icon [pathLength] {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 500ms var(--ease-editorial);
+  }
+
+  .range-phase:hover .phase-icon [pathLength] {
+    stroke-dashoffset: 0;
+  }
+
+  .phase-icon [pathLength]:nth-child(2) { transition-delay: 120ms; }
+  .phase-icon [pathLength]:nth-child(3) { transition-delay: 240ms; }
+
+  .range-phase:hover .phase-icon {
+    animation: icon-float 2.4s ease-in-out 600ms infinite alternate;
+  }
+
+  @keyframes icon-float {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-3px);
+    }
+  }
+
+  /* The little TV is on air */
+  .edu-icon .tv-line {
+    animation: tv-flicker 2.8s ease-in-out infinite;
+  }
+
+  .edu-icon .tv-line + .tv-line {
+    animation-delay: 1.4s;
+  }
+
+  @keyframes tv-flicker {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 0.9; }
+  }
+
   /* Lamp glow breathes slowly; bulb warms up */
   .lamp .lamp-light {
     animation: lamp-breathe 4.5s var(--ease-editorial) infinite alternate;
@@ -902,6 +998,16 @@ a:hover {
   .range-phase::before {
     top: 4px;
     left: calc(-1 * var(--space-24) - 6px);
+  }
+
+  .phase-icon {
+    display: none;
+  }
+
+  .watermark {
+    width: 11rem;
+    right: -1.25rem;
+    bottom: -1.5rem;
   }
 
   .section {
